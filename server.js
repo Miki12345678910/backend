@@ -1,5 +1,3 @@
-// moi
-
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
@@ -10,10 +8,8 @@ const app = express();
 app.use(express.json());
 app.use(cors({origin: "*"}));
 
-// Debug-tulostus ympäristömuuttujalle
-console.log("Yhdistettävä MongoDB URI:", process.env.MONGO_URI);  // Tarkista, että URI on oikein
+console.log("Yhdistettävä MongoDB URI:", process.env.MONGO_URI);  
 
-// MongoDB Atlas yhteyden muodostus
 const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB Atlas yhdistetty"))
@@ -21,17 +17,15 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 app.get("/", (req, res) => {
-  res.send("Tervetuloa backendiin!");
+  res.send("Riku!");
 });
 
-// Luo mongoose-malli
 const SuosikkiSchema = new mongoose.Schema({
   itemName: String,
 });
 
 const Suosikki = mongoose.model("Suosikki", SuosikkiSchema);
 
-// 🚀 API-endpoint suosikin tallentamiseen
 app.post("/suosikit", async (req, res) => {
   try {
     const { itemName } = req.body;
@@ -48,7 +42,6 @@ app.post("/suosikit", async (req, res) => {
   }
 });
 
-// 🚀 API-endpoint suosikkien hakemiseen
 app.get("/suosikit", async (req, res) => {
   try {
     const suosikit = await Suosikki.find();
@@ -58,7 +51,6 @@ app.get("/suosikit", async (req, res) => {
   }
 });
 
-// 🚀 API-endpoint suosikin poistamiseen
 app.delete("/suosikit/:id", async (req, res) => {
   try {
     await Suosikki.findByIdAndDelete(req.params.id);
