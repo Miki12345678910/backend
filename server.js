@@ -51,12 +51,17 @@ app.get("/suosikit", async (req, res) => {
   }
 });
 
-app.delete("/suosikit/:id", async (req, res) => {
+app.delete("/suosikit/nimi/:name", async (req, res) => {
   try {
-    await Suosikki.findByIdAndDelete(req.params.id);
-    res.json({ message: "Suosikki poistettu" });
+    const result = await Suosikki.deleteMany({ itemName: req.params.name });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: "Suosikkeja ei löytynyt" });
+    }
+
+    res.json({ message: `Poistettu ${result.deletedCount} suosikkia` });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Palvelinvirhe" });
   }
 });
 
