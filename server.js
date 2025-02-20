@@ -51,7 +51,7 @@ app.get("/suosikit", async (req, res) => {
   }
 });
 
-app.delete("/suosikit/nimi/:name", async (req, res) => {
+app.delete("/suosikit/:name", async (req, res) => {
   try {
     const result = await Suosikki.deleteMany({ itemName: req.params.name });
 
